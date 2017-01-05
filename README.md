@@ -5,8 +5,23 @@ Write models and generate mongoose schemas and client-side on-rest models
 Inspired by
 * https://florianholzapfel.github.io/express-restify-mongoose/
 
+## Why ?
+
+* Модели монгуса не наследуемы
+* По моделям монгуса сложно сторить JSON схемы
+* Контроллеры постоянно получаются однотипными
+* Фронт постоянно получается однотипным
+* Потому что на фронте, чтото все равно нужно будет подключать для превалидации моделей
+* Это чтото должно поддерживать асинхронные клиент-серверные валидаторы (например для проверки занят ли юзернейм)
+
 ## How to use
 
+### Use like mongoose schema:
+
+
+#### Write schema in models/User.js
+`models/User.server.js`
+```js
 import { Schema } from 'universal-model'
 
 const schema = new Schema({
@@ -57,50 +72,73 @@ schema.pre('save', function (next) {
 });
 
 export default schema
+```
 
 
-/////
+#### Working with model on server
+`models/User.server.js`
+```js
 // Mongoose
 // user.server.js
-import schema from '/models/user'
-const MongooseUser = mongoose.model('User', schema.getMongooseSchema())
+import mongoose from 'mongoose'
+import User from '/models/User'
+
+mongoose.connection(...)
+/// etc
+
+const MongooseUser = mongoose.model('User', User.getMongooseSchema())
+// or
+const MongooseUser = User.getMongooseModel(mongoose)
+
 MongooseUser.findOne({
   username: 'isuvorov'
 })
 .then(user => {
   console.log(user);
 })
-export MongooseUser
+export default MongooseUser
+```
 
+#### Make restful routes easy
+```js
 // Express restful route
 import { restful } from 'universal-model'
+import MongooseUser from '/models/MongooseUser'
+
 const restfulRoute = restful(MongooseUser)
 app.use('/api/user', restfulRoute)
 // or
 app.use('/api/user', restful(MongooseUser))
+```
 
-`GET /api/user`
-`GET /api/user/:id`
-`POST /api/user`
-`PUT /api/user/:id`
-`DELETE /api/user/:id`
+Its makes routes:
+```
+GET /api/user
+GET /api/user/:id
+POST /api/user
+PUT /api/user/:id
+DELETE /api/user/:id
+```
 
+#### Work on client-side
 
-//////////
-///// On client
-// user.client.js
-import schema from '/models/user'
-const ClientUser = schema.getClientModel({
+`models/User.client.js`
+```js
+import User from 'models/User'
+const ClientUser = User.getClientModel({
   base: '/api/user'
 })
 export default ClientUser
+```
 
 
-// UsersPage
-import ClientUser from 'user.client.js'
-MongooseUser.findOne({
+`UserPage.jsx`
+```js
+import ClientUser from 'models/User.client.js'
+ClientUser.findOne({
   username: 'isuvorov'
 })
 .then(user => {
   console.log(user);
 })
+```
