@@ -3,7 +3,7 @@ Write models and generate mongoose schemas and client-side on-rest models
 
 # It's just a concept yet
 Inspired by
-* https://github.com/nekr/glob-loader
+* https://florianholzapfel.github.io/express-restify-mongoose/
 
 ## How to use
 
