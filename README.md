@@ -145,7 +145,7 @@ ClientUser.findOne({
 
 
 # Мысли по universal-model
-```
+```js
 class Request {
 
   isCollection = true;
