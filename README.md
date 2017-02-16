@@ -147,3 +147,113 @@ ClientUser.findOne({
   console.log(user);
 })
 ```
+
+
+# Мысли по universal-model
+```js
+class Request {
+
+  isCollection = true;
+  criteria = {};
+  skip = 0;
+  limit = 20;
+  select = null;
+
+  async fetch() {
+    await fetch(this._base, {method: 'POST', body: this.getOptions()})
+
+    if () {
+      return res
+    } else {
+      return res[0]
+    }
+  }
+  
+  applyOptions() {
+    
+  }
+  
+  skip(skip) {
+    this.skip = skip;
+    return this;
+  }
+  
+  find(criteria, options) {
+    this.isCollection = true;
+    this.criteria = criteria;
+    this.applyOptions(options)
+    return this;
+  }
+  
+  findOne(criteria) {
+    this.isCollection = false;
+    this.criteria = criteria;
+    this.applyOptions(options)
+    return this;
+    
+  }
+  findById(id) {
+    return this.findOne({_id: id})
+  }
+
+}
+
+
+// UM => 
+// schema mongoose + как общаться
+// static
+// __v: 1 
+class User exte{
+  static _base = '/api/universal-model';
+  static _model = '/api/user';
+
+
+  firstname = 'isuvorov' 
+  firstname = 'isuvorov' 
+
+  
+  constructor() {
+    
+    
+  }
+  save() {
+    if ()
+    return (new Request({
+      _base: this._base,
+      _model: this._model,
+      _isNew: true,
+    }))
+    
+  }
+  static prepare() {
+    return new Request({
+      _base: this._base,
+      _model: this._model,
+    })
+  }
+
+  
+  static findOne(...args) {
+    return (new Request({
+      _base: this._base,
+      _model: this._model,
+    })).findOne(...args)
+  }
+
+
+  
+}
+
+User.findOne({
+  username: 'isuvorov',
+})
+
+
+const user = new User()
+user.ignoreIfCollision().save(); // {ignore: 1}
+user.acceptFriend({asd: 12312}) // async method
+user.asdasd = 123123
+user.save()
+```
+
+
