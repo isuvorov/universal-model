@@ -1,0 +1,4 @@
+{
+  "main":"Counter.server.js",
+  "browser": "Counter.client.js"
+}

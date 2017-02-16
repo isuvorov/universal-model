@@ -1,0 +1,4 @@
+{
+  "main":"UniversalPet.server",
+  "browser": "UniversalPet.client"
+}

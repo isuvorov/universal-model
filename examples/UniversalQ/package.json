@@ -1,0 +1,4 @@
+{
+  "main":"UniversalCounter.server.js",
+  "browser": "UniversalCounter.client.js"
+}
