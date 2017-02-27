@@ -12,7 +12,7 @@ export default function createRoute({ models = {}, ...ctx }) {
     // console.log(req, params, req.data);
     if (!params.action) throw e400('!params.action');
     if (!params.model) throw e400('!params.model');
-    if (!models[params.model]) throw e400('!models[params.model]');
+    if (!models[params.model]) throw e400(`!models[${params.model}]`);
     const universalActions = models[params.model].universalActions || [];
     if (universalActions.indexOf(params.action) === -1) {
       throw e403(`Action ${params.model}.${params.action} is not available on client`);
@@ -20,9 +20,11 @@ export default function createRoute({ models = {}, ...ctx }) {
     let args;
     try {
       const paramsArgs = params.arguments || params.args;
+      console.log({paramsArgs});
       if (!Array.isArray(paramsArgs)) {
         args = JSON.parse(paramsArgs);
       }
+      console.log({args});
       if (!Array.isArray(args)) args = [];
     } catch (err) {
       args = [];

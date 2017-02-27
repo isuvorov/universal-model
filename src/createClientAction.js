@@ -1,4 +1,10 @@
-export default function createClientAction({ api, route, params, model, action, deserialize, onError }) {
+const defaultRoute = '/universal'
+
+
+// @TODO: Придумать имя
+export default function createClientAction({ api, route = defaultRoute, params, model, action, deserialize, onError }) {
+  console.log('createClientAction', {route});
+
   return async function (...args) {
     const pack = await api.fetch(route, {
       method: 'POST',
