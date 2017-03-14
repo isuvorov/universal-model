@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import mapValues from './mapValues';
 // export default function createRoute({ models = {}, ...ctx }) {
 //   return (req) => {
 //     const { e403, e400 } = ctx.errors;
@@ -49,20 +49,17 @@ import _ from 'lodash';
 
 
 export default ({ models = {}, ctx }) => {
-
   // const namespace = io.of('/universal');
   // io.atachMiddlwares(namespace);
   return (namespace) => {
     namespace.on('connection', async (socket) => {
       const req = socket.request;
-
-
       // //
       // //
       const { e403, e400 } = ctx.errors;
       const params = req.data;
       if (params.model === 'model') {
-        return _.mapValues(models, (model) => {
+        return mapValues(models, (model) => {
           return model.universalActions || [];
           // return Object.values(model.universalMethods || {});
         });
@@ -133,7 +130,5 @@ export default ({ models = {}, ctx }) => {
       //   });
       // });
     });
-  }
-
-
+  };
 };

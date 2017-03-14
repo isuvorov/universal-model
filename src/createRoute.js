@@ -1,20 +1,21 @@
-import _ from 'lodash';
-///console.log('universal-model init');
+import mapValues from './mapValues';
+
+// /console.log('universal-model init');
 export default function createRoute({ models = {}, ...ctx }) {
-  ///console.log('createRoute init');
+  // /console.log('createRoute init');
   return (req) => {
-    ///console.log('createRouter run');
+    // /console.log('createRouter run');
     const { e403, e400 } = ctx.errors;
     const params = Object.assign({}, req.query, req.body);
-    ///console.log('params', params, req.allParams());
+    // /console.log('params', params, req.allParams());
 
     if (params.model === 'model') {
-      return _.mapValues(models, (model) => {
+      return mapValues(models, (model) => {
         return model.universalActions || [];
         // return Object.values(model.universalMethods || {});
       });
     }
-    ///// console.log(req, params, req.data);
+    // /// console.log(req, params, req.data);
     if (!params.action) throw e400('!params.action');
     if (!params.model) throw e400('!params.model');
     if (!models[params.model]) throw e400(`!models[${params.model}]`);
@@ -25,15 +26,15 @@ export default function createRoute({ models = {}, ...ctx }) {
     let args;
     try {
       const paramsArgs = params.arguments || params.args;
-      ///console.log({paramsArgs});
+      // /console.log({paramsArgs});
       if (!Array.isArray(paramsArgs)) {
         args = JSON.parse(paramsArgs);
       } else {
-        args = paramsArgs
+        args = paramsArgs;
       }
-      ///console.log({args});
+      // /console.log({args});
       if (!Array.isArray(args)) {
-        throw 'incorrect args'
+        throw 'incorrect args';
       }
     } catch (err) {
       console.log('universal-model getargs error', err);
@@ -41,13 +42,11 @@ export default function createRoute({ models = {}, ...ctx }) {
     }
 
 
-
-
     if (!models[params.model][params.action]) throw e400('!models[params.model][params.action]');
 
 
     if (params.socket && req.socket) {
-      models[params.model][params.action](req, socket)
+      models[params.model][params.action](req, socket);
     }
     //
     // if (params.instance)

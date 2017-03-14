@@ -1,4 +1,3 @@
-import _ from 'lodash';
 export default function getActions(actions = []) {
   if (Array.isArray(actions)) {
     return actions.map((action) => {
@@ -10,9 +9,11 @@ export default function getActions(actions = []) {
       return action;
     });
   }
-  return _.map((action, name) => {
-    if (typeof action === 'string') return { name: action };
-    if (action === true) return { name };
-    return action;
-  });
+
+  throw "HZHZHZHZHZHZH"
+  // return _.map((action, name) => {
+  //   if (typeof action === 'string') return { name: action };
+  //   if (action === true) return { name };
+  //   return action;
+  // });
 }

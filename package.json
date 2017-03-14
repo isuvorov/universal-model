@@ -1,6 +1,6 @@
 {
   "name": "universal-model",
-  "version": "0.1.2",
+  "version": "0.1.6",
   "description": "Write models and generate mongoose schemas and client-side on-rest models",
   "repository": "isuvorov/universal-model",
   "author": "Igor Suvorov <hi@isuvorov.ru>",
@@ -77,7 +77,8 @@
     "start": "easystatic start docs"
   },
   "scripts": {
-    "babel-build": "rm -rf dist/* && babel src --out-dir dist --source-maps inline --copy-files",
+    "babel-publish": "npm run babel-build && npm publish dist",
+    "babel-build": "rm -rf dist && mkdir dist && cp {package.json,yarn.lock,README.md} dist/ && babel src --out-dir dist --source-maps inline --copy-files",
     "dev": "npm run babel-build -- --watch"
   },
   "peerDependencies": {
