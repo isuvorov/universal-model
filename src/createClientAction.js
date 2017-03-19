@@ -3,7 +3,7 @@ const defaultRoute = '/universal';
 // @TODO: Придумать имя
 export default function createClientAction(args1) {
   const { api, route = defaultRoute, params, model, action, transform, format, onError } = args1;
-  return async function (...args) {
+  return async (...args) => {
     const pack = await api.fetch(route, {
       method: 'POST',
       body: {
@@ -22,7 +22,6 @@ export default function createClientAction(args1) {
     }
     if (transform) return transform(pack.data);
     if (format) {
-      console.log({format});
       if (Array.isArray(format)) {
         if (!Array.isArray(pack.data)) {
           throw 'format(pack.data) exprect Array type';

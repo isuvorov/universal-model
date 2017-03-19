@@ -1,13 +1,17 @@
 import mapValues from './mapValues';
 
-// /console.log('universal-model init');
+function log(...args) {
+  if (process.env.DEBUG) console.log(...args); // eslint-disable-line
+}
+
+// /log('universal-model init');
 export default function createRoute({ models = {}, ...ctx }) {
-  console.log('createRoute init');
+  log('createRoute init');
   return (req) => {
-    console.log('createRouter run');
+    log('createRouter run');
     const { e403, e400 } = ctx.errors;
     const params = Object.assign({}, req.query, req.body);
-    // /console.log('params', params, req.allParams());
+    // /log('params', params, req.allParams());
 
     if (params.model === 'model') {
       return mapValues(models, (model) => {
@@ -15,7 +19,7 @@ export default function createRoute({ models = {}, ...ctx }) {
         // return Object.values(model.universalMethods || {});
       });
     }
-    // /// console.log(req, params, req.data);
+    // /// log(req, params, req.data);
     if (!params.action) throw e400('!params.action');
     if (!params.model) throw e400('!params.model');
     if (!models[params.model]) throw e400(`!models[${params.model}]`);
@@ -26,18 +30,18 @@ export default function createRoute({ models = {}, ...ctx }) {
     let args;
     try {
       const paramsArgs = params.arguments || params.args;
-      // /console.log({paramsArgs});
+      // /log({paramsArgs});
       if (!Array.isArray(paramsArgs)) {
         args = JSON.parse(paramsArgs);
       } else {
         args = paramsArgs;
       }
-      // /console.log({args});
+      // /log({args});
       if (!Array.isArray(args)) {
         throw 'incorrect args';
       }
     } catch (err) {
-      console.log('universal-model getargs error', err);
+      log('universal-model getargs error', err);
       args = [];
     }
 
@@ -46,14 +50,14 @@ export default function createRoute({ models = {}, ...ctx }) {
 
 
     if (params.socket && req.socket) {
-      console.log(`WS umodels[${params.model}].${params.action}()`);
-      models[params.model][params.action](req, socket);
+      log(`WS umodels[${params.model}].${params.action}()`);
+      models[params.model][params.action](req, req.socket);
     }
     //
     // if (params.instance)
     //
 
-    console.log(`GET umodels[${params.model}].${params.action}(${args.map(a => JSON.stringify(a)).join(',')})`);
+    log(`GET umodels[${params.model}].${params.action}(${args.map(a => JSON.stringify(a)).join(',')})`);
     return models[params.model][params.action](...args);
   };
 }
