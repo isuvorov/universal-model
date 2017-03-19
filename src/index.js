@@ -1,6 +1,4 @@
 module.exports = {
-  // Schema: require('./Schema').default,
-  // Model: require('./Model').default,
   createSocketNamespace: require('./createSocketNamespace').default,
   connectAction: require('./connectAction').default,
   createClientActions: require('./createClientActions').default,
