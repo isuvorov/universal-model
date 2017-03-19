@@ -1,6 +1,7 @@
-import createClientAction from './createClientAction';
+import createClientAction from './createClientAction'
 
 export default function createClientActions({ actions, ...config }) {
+  // console.log({actions, config});
   if (!Array.isArray(actions)) throw '!actions not Array';
 
   const actionMethods = {};

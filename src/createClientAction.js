@@ -22,11 +22,12 @@ export default function createClientAction(args1) {
     }
     if (transform) return transform(pack.data);
     if (format) {
+      console.log({format});
       if (Array.isArray(format)) {
         if (!Array.isArray(pack.data)) {
           throw 'format(pack.data) exprect Array type';
         }
-        return pack.data.map(a => new format(a));
+        return pack.data.map(a => new format[0](a));
       }
       return new format(a);  // eslint-disable-line
     }

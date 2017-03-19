@@ -2,9 +2,9 @@ import mapValues from './mapValues';
 
 // /console.log('universal-model init');
 export default function createRoute({ models = {}, ...ctx }) {
-  // /console.log('createRoute init');
+  console.log('createRoute init');
   return (req) => {
-    // /console.log('createRouter run');
+    console.log('createRouter run');
     const { e403, e400 } = ctx.errors;
     const params = Object.assign({}, req.query, req.body);
     // /console.log('params', params, req.allParams());
@@ -46,13 +46,14 @@ export default function createRoute({ models = {}, ...ctx }) {
 
 
     if (params.socket && req.socket) {
+      console.log(`WS umodels[${params.model}].${params.action}()`);
       models[params.model][params.action](req, socket);
     }
     //
     // if (params.instance)
     //
 
-
+    console.log(`GET umodels[${params.model}].${params.action}(${args.map(a => JSON.stringify(a)).join(',')})`);
     return models[params.model][params.action](...args);
   };
 }
