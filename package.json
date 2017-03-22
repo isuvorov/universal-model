@@ -48,7 +48,7 @@
     "start": "easystatic start docs"
   },
   "scripts": {
-    "babel-publish": "DEBUG=0 npm run babel-build && npm publish dist",
+    "publish": "DEBUG=0 npm run babel-build && npm publish dist",
     "babel-build": "rm -rf dist && mkdir dist && cp {package.json,yarn.lock,README.md} dist/ && babel src --out-dir dist --source-maps inline --copy-files",
     "dev": "DEBUG=1 npm run babel-build -- --watch"
   },
