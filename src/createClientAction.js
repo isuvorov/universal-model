@@ -4,6 +4,7 @@ const defaultRoute = '/universal';
 export default function createClientAction(args1) {
   const { api, route = defaultRoute, params, model, action, transform, format, onError } = args1;
   return async (...args) => {
+    // console.log('action!@#!@#');
     const pack = await api.fetch(route, {
       method: 'POST',
       body: {
@@ -20,16 +21,20 @@ export default function createClientAction(args1) {
         throw pack.err;
       }
     }
-    if (transform) return transform(pack.data);
+    const data = pack.data;
+    // console.log('aaa aaa1111111');
+    if (transform) return transform(data);
+    // console.log('aaa 222222');
     if (format) {
+      // console.log('aaa 33333', format, data);
       if (Array.isArray(format)) {
-        if (!Array.isArray(pack.data)) {
-          throw 'format(pack.data) exprect Array type';
+        if (!Array.isArray(data)) {
+          throw 'format(data) exprect Array type';
         }
-        return pack.data.map(a => new format[0](a));
+        return data.map(a => new format[0](a));
       }
-      return new format(a);  // eslint-disable-line
+      return new format(data);  // eslint-disable-line
     }
-    return pack.data;
+    return data;
   };
 }
